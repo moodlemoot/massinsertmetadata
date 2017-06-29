@@ -23,10 +23,10 @@
 
 defined('MOODLE_INTERNAL') || die;
 $plugin->version   = 2016102407;
-$plugin->release   = 'ALPHA0.0.1 (Build 2017042700)';
+$plugin->release   = 'ALPHA3.2.0 (Build 2017042700)';
 $plugin->maturity  = MATURITY_ALPHA;
-$plugin->requires  = 2016051900; // Moodle 3.1 release and upwards.
+$plugin->requires  = 2016120500; // Moodle 3.2 release and upwards.
 $plugin->component = 'local_massinsertmetadata';
 
 // Non moodle attributes.
-$plugin->codeincrement = '3.1.0000';
+$plugin->codeincrement = '3.2.0000';
