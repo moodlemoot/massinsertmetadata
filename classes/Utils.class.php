@@ -16,85 +16,140 @@ class Utils {
                                   WHERE shortname = '$shortname'");
     }
 
-    public static function testDataSet($header, $data) {
-        //fonction qui pour une entete $header donnÈe et un jeu de donnÈe $data 
-        //// va tester si les metadonnÈes existent via leur shortname, 
+    public static function testCourseDataSet($header, $data) {
+        //fonction qui pour une entete $header donn√©e et un jeu de donn√©e $data 
+        //// va tester si les metadonn√©es existent via leur shortname, 
         // si les cours existent et si le type de valeur est bon
         // si metadata manquante => erreur critique on sort avec FALSE
         // sinon on sort en retournant un tableau associatif pour affichage
-// verification des entetes
+        // 
+        // init du retour
+        $retourObject = new stdClass();
+        // le code erreur si besoin
+        $retourObject->Erreur = false;
+        // le libelle de l'erreur
+        $retourObject->ErreurLibelle = '';
+        //le tableau header + data + [erreurs] pour affichage
+        $retourObject->TabAffichage = array();
+        //le tableau de triplets √† importer (ceux sans erreur)
+        $retourObject->Triplets = array();
 
+        // test de la taille des param√®tres doit etre un talbeau non vide
+        if (sizeof($header) == 0 or ! is_array($header)) {
+            $retourObject->Erreur = true;
+            $retourObject->ErreurLibelle = 'Le param√®tre header doit √™tre un tableau non vide';
+            return $retourObject;
+        }
+
+        // test de la taille des datas doit etre un talbeau non vide
+        if (sizeof($data) == 0 or ! is_array($data)) {
+            $retourObject->Erreur = true;
+            $retourObject->ErreurLibelle = 'Le param√®tre data doit √™tre un tableau non vide';
+            return $retourObject;
+        }
+        // liste des types d'identifiants qui seront utilis√©s comme identifiant
+        $tabtypeimport = array('course_shortname', 'to_do');
+        // il faudrait associer les types d'id avec les context level TODO
 
         $tabTypeMetadata = array();
+        $typeImport = $header[0];
+        if (in_array($typeImport, $tabtypeimport)) {
+            // echo "$typeImport ok";
+        } else {
+            $retourObject->Erreur = true;
+            $retourObject->ErreurLibelle = "le type d objet $typeImport n est pas dans la liste d objets importables";
+            return $retourObject;
+        }
+
+        // si tout est bon alors on va proc√©der √† la verification des entetes
+
         for ($cpt = 1; $cpt < sizeof($header); $cpt++) {
             // on teste si la metadata existe via son shortname
             $recupmetadata = Utils::get_metadata_by_shortname($header[$cpt]);
             // WIP pour recuperer les types
-            //var_dump($recupmetadata);
+
             if (sizeof($recupmetadata) > 0) {
-                // ok on continue
-                // on stocke le type dans un tableau dÈdiÈ
-                /* WIP problËme faire un pop du tableau pour rÈcuperer la valeur ?
-                  foreach ($tabTypeMetadata as $value) {
-                  echo "un sous tableau";
-                  // WIP a finir var_dump($value);
-                  $tabTypeMetadata[] = $value->datatype;
-                  }
-                 * 
-                 */
-                // $tabTypeMetadata[]=$recupmetadata[0]->datatype;
+                // on va recup√©rer l'objet retourn√© pour stocker les id et les types
+                $obj = array_pop($recupmetadata);
+                $tabIdMetadata[] = $obj->id;
+                $tabTypeMetadata[] = $obj->datatype;
             } else {
                 // si metadata manquante => erreur critique on sort en retournant FALSE
-                // echo "$header[$cpt] n'existe pas";
-                // WIP voir le type de retour pour renvoyer un libellÈ Ègalement ?
-                return FALSE;
+                $retourObject->Erreur = true;
+                $retourObject->ErreurLibelle = "la metadonn√©e $header[$cpt] n'existe pas n est pas dans la liste de metadonn√©es";
+                return $retourObject;
             }
         }
-        // on construit le rÈsultat
+
+        // on construit le r√©sultat
         // ligne entete 
         // ligne + code erreur + lib (si besoin)
         $result[] = $header;
 
-// pour chaque ligne de donnÈe, vÈrification de l'existance du cours
+// pour chaque ligne de donn√©e, v√©rification de l'existance du cours
 // si une ligne contient une erreur (cours inexistant, metadata requis, mauvais type,...
-// alors on met la ligne en erreur en prÈcisant l'erreur
-        foreach ($data as $ligne) {
-            // pour chaque ligne, on a un sous tableau
-            // on va tester l'existence du cours
-           // echo "<br><br>nouvelle ligne de data  pour le cours: $ligne[0]<br>\n";
-            // test de l'existence de l'objet
-            //$verifcours = get_course(1);
-            //var_dump($verifcours);
-            // on essaye de rÈcupÈrer les infos du cours
-            $recupcours = Utils::get_courseId_by_shortname("$ligne[0]");
-            if (sizeof($recupcours) > 0) {
-                //echo "<br>\n OK  $ligne[0] existe !<br>\n";
-                // on a trouvÈ un cours on 
+// alors on met la ligne en erreur en pr√©cisant l'erreur
+        for ($cpt = 0; $cpt < sizeof($data); $cpt++) {
+            $ligne = $data[$cpt];
+            
+            //si on est sur un cours alors
+            // TODO g√©rer les autre types
+            if ($typeImport == 'course_shortname') {
+                // on essaye de r√©cup√©rer les infos du cours
+                $recupObject = Utils::get_courseId_by_shortname("$ligne[0]");
+            } else {
+                // on ne sait pas g√©rer ce type d'import 
+                $retourObject->Erreur = true;
+                $retourObject->ErreurLibelle = "type $typeImport non g√©r√©...";
+                return $retourObject;
+            }
+            
+            // on test ici si on a pas trop de colonne
+            if (sizeof($header) < sizeof($ligne)) {
+                //echo "<b>ERREUR moyenne</b> type pas bon...";
+                $ligne['ERROR'] = 3;
+                $ligne['ERROR_DESCR'] = "Trop de valeur pour la  $ligne[$cpt]";
+                // on ne va pas plus loin pour cette ligne puisque l'on vient de lui ajouter une erreur
+                $retourObject->TabAffichage[] = $ligne;
+                continue;
+            }
+
+            if (sizeof($recupObject) > 0) {
+                // on a trouv√© un cours on 
+                $obj2 = array_pop($recupObject);
+                $idObjet = $obj2->id;
+
                 //constinue on va tester les autres champs
-                for ($cpt = 1; $cpt < sizeof($ligne); $cpt++) {
-                    //echo 'on va tester : ' . $ligne[$cpt] . " pour le type $tabTypeMetadata[cpt]<br>\n";
+                for ($cpt2 = 1; $cpt2 < (sizeof($ligne)); $cpt2++) {
+                    $triplet = NULL;
                     // si c'est bien un string
                     // tODO lancer les test en fonction des types 
-                    if (is_string($ligne[$cpt])) {
+                    // pour le moment que string
+                    if (is_string($ligne[$cpt2])) {
                         //ok continue
-                       // echo "type string ok";
+                        // on peuple le triplet(objet,metadata,value)
+                        $triplet = array('objectId' => $idObjet, 'metadataId' => $tabIdMetadata[$cpt], 'value' => $ligne[$cpt2]);
                     } else {
-                        //echo "<b>ERREUR moyenne</b> type pas bon...";
+                        //ERREUR moyenne type d'une metadonn√©e pas bon";
                         $ligne['ERROR'] = 2;
-                        $ligne['ERROR_DESCR'] = "Le type de la metadata $ligne[$cpt] ne correspond pas";
+                        $ligne['ERROR_DESCR'] = "Le type de la metadata ne correspond pas";
                         // on ne va pas plus loin pour cette ligne puisque l'on vient de lui ajouter une erreur
-                        breack;
+                        continue;
+                    }
+                    // on stocke tout cela dans l'objet
+                    if (!empty($triplet)) {
+                        $retourObject->Triplets[] = $triplet;
                     }
                 }
             } else {
-                //echo "<b>ERREUR GRAVE</b> COURS :( $ligne[0] n'existe pas...";
+                //ERREUR GRAVE l'objet n'existe pas...";
                 $ligne['ERROR'] = 1;
-                $ligne['ERROR_DESCR'] = "Le cours $ligne[0] n'existe pas";
+                $ligne['ERROR_DESCR'] = "L'objet $ligne[0] n'existe pas";
             }
-            //on concatene notre ligne et les eventuelles erreur au rÈsultat
-            $result[] = $ligne;
+            //on concatene notre ligne et les eventuelles erreur au r√©sultat
+            $retourObject->TabAffichage[] = $ligne;
         }
-        return $result;
+        return $retourObject;
     }
 
 }
