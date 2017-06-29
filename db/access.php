@@ -15,17 +15,29 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package local_massinsertmetadata
- * @author Moodle Code Sprint Moodle Moot 2017 France (Lyon)
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   local_massinsertmetadata
+ * @category  local
+ * @author    Valery Fremaux (valery.fremaux@gmail.com)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die();
 
-defined('MOODLE_INTERNAL') || die;
-$plugin->version   = 2016102407;
-$plugin->release   = 'ALPHA3.2.0 (Build 2017042700)';
-$plugin->maturity  = MATURITY_ALPHA;
-$plugin->requires  = 2016120500; // Moodle 3.2 release and upwards.
-$plugin->component = 'local_massinsertmetadata';
+$capabilities = array(
 
-// Non moodle attributes.
-$plugin->codeincrement = '3.2.0000';
+    'local/massinsertmetadata:insert' => array(
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+        )
+    ),
+    'local/massinsertmetadata:erase' => array(
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+        )
+    ),
+);
