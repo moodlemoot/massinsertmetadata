@@ -14,18 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * @package local_massinsertmetadata
- * @author Moodle Code Sprint Moodle Moot 2017 France (Lyon)
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+$string['pluginname'] = 'Import de métadonnées génériques';
+$string['massinsertmetadata:insert'] = 'Peut injecter des métadonnées';
+$string['massinsertmetadata:erase'] = 'Peut effacer toutes les métadonnées';
 
-defined('MOODLE_INTERNAL') || die;
-$plugin->version   = 2016102407;
-$plugin->release   = 'ALPHA3.2.0 (Build 2017042700)';
-$plugin->maturity  = MATURITY_ALPHA;
-$plugin->requires  = 2016120500; // Moodle 3.2 release and upwards.
-$plugin->component = 'local_massinsertmetadata';
-
-// Non moodle attributes.
-$plugin->codeincrement = '3.2.0000';
