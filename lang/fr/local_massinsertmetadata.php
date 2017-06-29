@@ -17,4 +17,8 @@
 $string['pluginname'] = 'Import de métadonnées génériques';
 $string['massinsertmetadata:insert'] = 'Peut injecter des métadonnées';
 $string['massinsertmetadata:erase'] = 'Peut effacer toutes les métadonnées';
+$string['configencoding'] = 'Encodage par défaut (ligne de commande)';
+$string['configencoding_desc'] = 'L\'encodage par défaut du fichier donné en ligne de commande';
+$string['configseparator'] = 'Séparateur par défaut';
+$string['configseparator_desc'] = 'Le séparateur par défaut du fichier donné en ligne de commande';
 

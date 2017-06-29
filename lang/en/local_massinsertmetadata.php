@@ -17,3 +17,7 @@
 $string['pluginname'] = 'Generic metadata mass import';
 $string['massinsertmetadata:insert'] = 'Can mass insert metadata';
 $string['massinsertmetadata:erase'] = 'Can erase all metadata';
+$string['configencoding'] = 'Default encoding (CLI mode)';
+$string['configencoding_desc'] = 'The default encoding of the file given to a CLI command line';
+$string['configseparator'] = 'Default separator (CLI mode)';
+$string['configseparator_desc'] = 'The default separator of the file given to a CLI command line';
