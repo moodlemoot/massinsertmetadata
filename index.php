@@ -63,7 +63,12 @@ if (empty($importid)) {
 $context = context_system::instance();
 
 // Appel de la fonction de ludo envoyant $cir
-$test = Utils::testCourseDataSet($cir->get_colums,$monTest);
+$analysereport = Utils::testCourseDataSet($cir->get_columns(),$cir);
+
+if($analysereport->Erreur == true) {
+ die();   
+}
+    
 
 $options = array('mode' => tool_uploadcourse_processor::MODE_CREATE_NEW);
 $processor = new tool_uploadcourse_processor($cir, $options, array());
