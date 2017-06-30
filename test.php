@@ -8,8 +8,7 @@ require_once($CFG->libdir . '/csvlib.class.php');
  //require('../../lib/datalib.php');
 // TEst de manipulation des csv
 // tentative ouverture
-$context = context_system::instance();
-$PAGE->set_context($context);
+
 
 /*
  * 
@@ -25,6 +24,9 @@ $monTest[] = array("TEST2", "valeur3", "ok");
 
 $PAGE->set_url($CFG->wwwroot.'/local/moodle-local_massinsertmetadata/test.php', ['contextlevel' => $contextlevel]);
 GLOBAL $OUTPUT;
+
+$context = context_system::instance();
+$PAGE->set_context($context);
 
 // Test chargement de CSV
 $importid = optional_param('importid', '', PARAM_INT);
