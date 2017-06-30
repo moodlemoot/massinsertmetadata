@@ -56,6 +56,7 @@ if (empty($importid)) {
     $cir = new csv_import_reader($importid, 'uploadcourse');
 }
 $context = context_system::instance();
+$cir->init();
 // Appel de la fonction de ludo envoyant $cir
 
 $analysereport = local_metadata_utils::testCourseDataSet($cir->get_columns(),local_metadata_utils::readFromCSV($cir));
