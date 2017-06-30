@@ -130,7 +130,7 @@ class local_metadata_utils {
                     if (is_string($ligne[$cpt2])) {
                         //ok continue
                         // on peuple le triplet(objet,metadata,value)
-                        $triplet = array('insertId' => $idObjet, 'fieldid' => $tabIdMetadata[$cpt], 'value' => $ligne[$cpt2]);
+                        $triplet = array('instanceid'=> $idObjet, 'fieldid' => $tabIdMetadata[$cpt], 'value' => $ligne[$cpt2]);
                     } else {
                         //ERREUR moyenne type d'une metadonnée pas bon";
                         $ligne['ERROR'] = 2;
@@ -161,22 +161,22 @@ class local_metadata_utils {
         global $DB;
         foreach ($datas as $data){
             //check if exists
-            $record = $DB->get_record('local_metadata',array('fieldid'=> $data->fieldid,
-                   'instanceid'=> $data->instanceid));
+            $record = $DB->get_record('local_metadata',array('fieldid'=> $data['fieldid'],
+                   'instanceid'=> $data['instanceid']));
             // TODO missing dataformat treatment.
             if($record) {
                 $record->data = $data->value;
                 $DB->update_record($record);
             }else{
                 $record_field = $DB->get_record('local_metadata_field',
-                    array('id' =>$data-> fieldid ));
+                    array('id' =>$data['fieldid'] ));
                 if(!$record_field){
                     print_error('field not exists');
                 }
                 $record = new stdClass();
-                $record->instanceid=$data->instanceid;
-                $record->fieldid = $data-> fieldid;
-                $record->data = $data->value;
+                $record->instanceid=$data['instanceid'];
+                $record->fieldid = $data['fieldid'];
+                $record->data = $data['value'];
                 $record->dataformat = 0; //TODO dataformat treatment
                 $DB->insert_record($record);
             }
