@@ -1,6 +1,7 @@
 <?php
 require('../../config.php');
 require('./classes/utils.class.php');
+require_once('./classes/step1_form.php');
  //require('../../lib/datalib.php');
 // TEst de manipulation des csv
 // tentative ouverture
