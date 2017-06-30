@@ -152,4 +152,16 @@ class local_metadata_utils {
         return $retourObject;
     }
 
+    /**
+     *
+     */
+    public function write(){
+        //Création de l'objet contenant les données à écrire dans Moodle :
+        $dataset = new stdClass();
+
+        //Appel de la fonction du plugin local_metadata capable d'écrire ces données en base :
+
+
+    }
+
 }
