@@ -170,7 +170,7 @@ class local_metadata_utils {
     {
         $table = new html_table();
         $table->head = $headers;
-        $data_to_display = []
+        $data_to_display = [];
         foreach ($data as $line) {
             $line_to_display = $line;
             if (isset($line_to_display['ERROR'])) { // erreur dans la ligne
@@ -193,7 +193,7 @@ class local_metadata_utils {
      */
     public function readFromCSV($cir)
     {
-        $data = []
+        $data = [];
         while ($line = $cir->next()) { //get the line
             $data[] = $line;
         }
