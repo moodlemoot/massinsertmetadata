@@ -88,13 +88,13 @@ echo " PAGE de TEST du parser de chargement en masse de metadonnées sur un type
 
  
 // on passe nos datas dans le parser
-$test =  local_metadata_utils::testCourseDataSet($monTestHeader,$monTest);
- echo "<hr>";
+//$test =  local_metadata_utils::testCourseDataSet($monTestHeader,$monTest);
+// echo "<hr>";
  // le parser nous retourne un objet avec les attributs
 // 'Erreur' => false si pas d'erreur bloquante, true sinon
 // 'ErreurLibelle' => le détail de l'erreur fatale
 // 'TabAffichage' => le tableau pour affichage
 // 'Triplets' => les triplets pour la persistance en base
  
-var_dump($test);
+//var_dump($test);
  echo $OUTPUT->footer();

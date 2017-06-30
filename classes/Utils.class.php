@@ -165,8 +165,8 @@ class local_metadata_utils {
                    'instanceid'=> $data['instanceid']));
             // TODO missing dataformat treatment.
             if($record) {
-                $record->data = $data->value;
-                $DB->update_record($record);
+                $record->data = $data['value'];
+                $DB->update_record('local_metadata',$record);
             }else{
                 $record_field = $DB->get_record('local_metadata_field',
                     array('id' =>$data['fieldid'] ));
@@ -178,7 +178,8 @@ class local_metadata_utils {
                 $record->fieldid = $data['fieldid'];
                 $record->data = $data['value'];
                 $record->dataformat = 0; //TODO dataformat treatment
-                $DB->insert_record($record);
+		
+                $DB->insert_record('local_metadata',$record);
             }
         }        
         
