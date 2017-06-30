@@ -82,7 +82,7 @@ local_metadata_utils::previewTable($cir->get_columns(), $analysereport->TabAffic
                                    
 local_metadata_utils::write($analysereport->Triplets);
 
-echo $OUTPUT->notification('notifysuccess');
+echo $OUTPUT->notification('Création des metadatas réussies','notifysuccess');
 echo $OUTPUT->continue_button($returnurl);
     
 echo $OUTPUT->footer();
