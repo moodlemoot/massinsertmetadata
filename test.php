@@ -2,6 +2,9 @@
 require('../../config.php');
 require('./classes/utils.class.php');
 require_once('./classes/step1_form.php');
+require_once($CFG->libdir . '/adminlib.php');
+require_once($CFG->libdir . '/coursecatlib.php');
+require_once($CFG->libdir . '/csvlib.class.php');
  //require('../../lib/datalib.php');
 // TEst de manipulation des csv
 // tentative ouverture
