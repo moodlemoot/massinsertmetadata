@@ -1,5 +1,7 @@
 <?php
 
+require_once ($CFG->wwwroot . '/lib/outputcomponents.php');
+
 class local_metadata_utils {
 
     public static function get_metadata_by_shortname($shortname) {
@@ -162,6 +164,28 @@ class local_metadata_utils {
         //Appel de la fonction du plugin local_metadata capable d'écrire ces données en base :
 
 
+    }
+    
+    public function previewTable($headers = [], $data = [])
+    {
+        $table = new html_table();
+        $table->head = $headers;
+        $data_to_display = []
+        foreach ($data as $line) {
+            $line_to_display = $line;
+            if (isset($line_to_display['ERROR'])) { // erreur dans la ligne
+                $line_to_display[] = 'Invalide';
+                $line_to_display[] = $line_to_display['ERROR_DESCR'];
+                unset($line_to_display['ERROR']);
+                unset($line_to_display['ERROR_DESCR']);
+            } else {
+                $line_to_display[] = 'Valide';
+                $ligne_to_display[] = '';
+            }
+            $data_to_display[] = $line_to_display;
+        }
+        $table->data = $data_to_display;
+        echo html_write::table($table);
     }
 
 }
