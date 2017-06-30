@@ -8,7 +8,8 @@ require_once($CFG->libdir . '/csvlib.class.php');
  //require('../../lib/datalib.php');
 // TEst de manipulation des csv
 // tentative ouverture
-
+$context = context_system::instance();
+$PAGE->set_context($context);
 
 /*
  * 
