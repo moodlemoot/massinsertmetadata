@@ -27,6 +27,7 @@ require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->libdir . '/coursecatlib.php');
 require_once($CFG->libdir . '/csvlib.class.php');
 require_once('./classes/step1_form.php');
+require('./classes/utils.class.php');
 
 admin_externalpage_setup('tooluploadcourse');
 
@@ -62,6 +63,7 @@ if (empty($importid)) {
 $context = context_system::instance();
 
 // Appel de la fonction de ludo envoyant $cir
+$test = Utils::testCourseDataSet($cir->get_colums,$monTest);
 
 $options = array('mode' => tool_uploadcourse_processor::MODE_CREATE_NEW);
 $processor = new tool_uploadcourse_processor($cir, $options, array());
