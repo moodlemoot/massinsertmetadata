@@ -77,6 +77,9 @@ echo $OUTPUT->heading(get_string('uploadcoursespreview', 'tool_uploadcourse'));
 local_metadata_utils::previewTable($cir->get_columns(), $analysereport->TabAffichage);
 local_metadata_utils::write($analysereport->Triplets);                      
 
+echo $OUTPUT->notification('notifysuccess');
+echo $OUTPUT->continue_button($returnurl);
+
 echo $OUTPUT->footer();
 // Fin test chargement
 
