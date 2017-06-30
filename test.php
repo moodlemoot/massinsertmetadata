@@ -58,22 +58,25 @@ if (empty($importid)) {
 $context = context_system::instance();
 // Appel de la fonction de ludo envoyant $cir
 
-$analysereport = local_metadata_utils::testCourseDataSet($cir->get_columns(),$cir);
+$analysereport = local_metadata_utils::testCourseDataSet($cir->get_columns(),local_metadata_utils::readFromCSV($cir));
 if($analysereport->Erreur == true) {
     // modif LS
  die($analysereport->ErreurLibelle);   
 }
     
-$options = array('mode' => tool_uploadcourse_processor::MODE_CREATE_NEW);
-$processor = new tool_uploadcourse_processor($cir, $options, array());
+// Appel de la fonction de ludo envoyant $cir
+    
 // On affiche l'erreur s'il y en a une
 // Si pas d'erreur, on affiche le tableau des données avec statut et erreur s'il y a pour la ligne affichée
 // Envoyer le forumulaire, réutiliser le form 1 ?
+
 echo $OUTPUT->header();
-
 echo $OUTPUT->heading(get_string('uploadcoursespreview', 'tool_uploadcourse'));
-$processor->preview($previewrows, new tool_uploadcourse_tracker(tool_uploadcourse_tracker::OUTPUT_HTML));
+//Appel de fonction preview
+local_metadata_utils::previewTable($cir->get_columns(), $retourObject->TabAffichage[]);
+                                   
 
+echo $OUTPUT->footer();
 // Fin test chargement
 
 // echo $OUTPUT->header();
