@@ -24,7 +24,7 @@ GLOBAL $OUTPUT;
 // Test chargement de CSV
 $importid = optional_param('importid', '', PARAM_INT);
 $previewrows = optional_param('previewrows', 10, PARAM_INT);
-$returnurl = new moodle_url($CFG->wwwroot . '/local/moodle-local_massinsertmetadata/index.php');
+$returnurl = new moodle_url($CFG->wwwroot . '/local/moodle-local_massinsertmetadata/test.php');
 if (empty($importid)) {
     $mform1 = new tool_upload_metadata_step1();
     if ($form1data = $mform1->get_data()) {
