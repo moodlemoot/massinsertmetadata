@@ -1,6 +1,6 @@
 <?php
 
-class Utils {
+class local_metadata_utils {
 
     public static function get_metadata_by_shortname($shortname) {
         global $DB;
@@ -65,7 +65,7 @@ class Utils {
 
         for ($cpt = 1; $cpt < sizeof($header); $cpt++) {
             // on teste si la metadata existe via son shortname
-            $recupmetadata = Utils::get_metadata_by_shortname($header[$cpt]);
+            $recupmetadata = local_metadata_utils::get_metadata_by_shortname($header[$cpt]);
             // WIP pour recuperer les types
 
             if (sizeof($recupmetadata) > 0) {
@@ -96,7 +96,7 @@ class Utils {
             // TODO gérer les autre types
             if ($typeImport == 'course_shortname') {
                 // on essaye de récupérer les infos du cours
-                $recupObject = Utils::get_courseId_by_shortname("$ligne[0]");
+                $recupObject = local_metadata_utils::get_courseId_by_shortname("$ligne[0]");
             } else {
                 // on ne sait pas gérer ce type d'import 
                 $retourObject->Erreur = true;
