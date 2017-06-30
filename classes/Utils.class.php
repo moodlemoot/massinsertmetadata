@@ -157,7 +157,7 @@ class local_metadata_utils {
     /**
      * @param $datas
      */
-    public function write($datas,$contextlevel = CONTEXT_COURSE){
+    public static function write($datas,$contextlevel = CONTEXT_COURSE){
         global $DB;
         foreach ($datas as $data){
             //check if exists
