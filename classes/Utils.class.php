@@ -1,6 +1,6 @@
 <?php
 
-require_once ($CFG->wwwroot . '/lib/outputcomponents.php');
+require_once ($CFG->libdir . '/outputcomponents.php');
 
 class local_metadata_utils {
 
