@@ -66,7 +66,8 @@ $context = context_system::instance();
 $analysereport = local_metadata_utils::testCourseDataSet($cir->get_columns(),local_metadata_utils::readFromCSV($cir));
 
 if($analysereport->Erreur == true) {
- die();   
+    // modif LS
+ die($analysereport->ErreurLibelle);   
 }
     
 // On affiche l'erreur s'il y en a une
