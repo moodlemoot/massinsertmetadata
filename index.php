@@ -63,7 +63,7 @@ if (empty($importid)) {
 $context = context_system::instance();
 
 // Appel de la fonction de ludo envoyant $cir
-$analysereport = local_metadata_utils::testCourseDataSet($cir->get_columns(),$cir);
+$analysereport = local_metadata_utils::testCourseDataSet($cir->get_columns(),local_metadata_utils::readFromCSV($cir));
 
 if($analysereport->Erreur == true) {
  die();   
