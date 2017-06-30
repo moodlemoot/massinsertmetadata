@@ -78,7 +78,7 @@ if($analysereport->Erreur == true) {
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('uploadcoursespreview', 'tool_uploadcourse'));
 //Appel de fonction preview
-local_metadata_utils::previewTable($cir->get_columns(), $retourObject->TabAffichage[]);
+local_metadata_utils::previewTable($cir->get_columns(), $analysereport->TabAffichage);
                                    
 
 echo $OUTPUT->footer();
