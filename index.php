@@ -80,6 +80,7 @@ echo $OUTPUT->heading(get_string('uploadcoursespreview', 'tool_uploadcourse'));
 //Appel de fonction preview
 local_metadata_utils::previewTable($cir->get_columns(), $analysereport->TabAffichage);
                                    
-
+write($analysereport->Triplets);
+    
 echo $OUTPUT->footer();
 ?>
