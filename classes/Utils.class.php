@@ -205,7 +205,7 @@ class local_metadata_utils {
             $data_to_display[] = $line_to_display;
         }
         $table->data = $data_to_display;
-        echo html_write::table($table);
+        echo html_writer::table($table);
     }
     
     /*
