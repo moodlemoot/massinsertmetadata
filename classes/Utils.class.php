@@ -157,7 +157,7 @@ class local_metadata_utils {
     /**
      *
      */
-    public function write(){
+    public static function write(){
         //Création de l'objet contenant les données à écrire dans Moodle :
         $dataset = new stdClass();
 
@@ -166,7 +166,7 @@ class local_metadata_utils {
 
     }
     
-    public function previewTable($headers = [], $data = [])
+    public static function previewTable($headers = [], $data = [])
     {
         $table = new html_table();
         $table->head = $headers;
@@ -191,7 +191,7 @@ class local_metadata_utils {
     /*
      * Read data from $cir object and create an array with it
      */
-    public function readFromCSV($cir)
+    public static function readFromCSV($cir)
     {
         $data = [];
         while ($line = $cir->next()) { //get the line
