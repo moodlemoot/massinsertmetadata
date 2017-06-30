@@ -187,5 +187,17 @@ class local_metadata_utils {
         $table->data = $data_to_display;
         echo html_write::table($table);
     }
+    
+    /*
+     * Read data from $cir object and create an array with it
+     */
+    public function readFromCSV($cir)
+    {
+        $data = []
+        while ($line = $cir->next()) { //get the line
+            $data[] = $line;
+        }
+        return $data;
+    }
 
 }
