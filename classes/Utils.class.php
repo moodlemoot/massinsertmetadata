@@ -18,7 +18,36 @@ class local_metadata_utils {
                                   WHERE shortname = '$shortname'");
     }
 
+    public static function get_metadata_types() {
+        // retourne la liste des clefs valeurs des types de metadonnées
+        // avec en valeur le champ "datatype"
+        // vaut 1 pour textaera, 0 pour les autres
+        return array("text" => 0, "textaera" => 1, "menu" => 0, "checkbox" => 0, "checkbox" => 0);
+    }
+
+    public static function get_metadata_type_id($code) {
+        // renvoit l'id de la metadonnée en fonction du code
+        $datatypes = local_metadata_utils::get_metadata_types();
+        if (in_array($code, $datatypes)) {
+            return $datatypes[$code];
+        } else {
+            return false;
+        }
+    }
+
     public static function testCourseDataSet($header, $data) {
+        // todo gérer les différents types
+        // 
+        /*
+          Use metadata for course categories context == 40
+          Use metadata for cohorts context == 9000
+          Use metadata for courses context == 50
+          Use metadata for groups context == 60
+          Use metadata for modules  context == 70
+          Use metadata for users context == 30
+         * 
+         */
+        // 
         //fonction qui pour une entete $header donnée et un jeu de donnée $data 
         //// va tester si les metadonnées existent via leur shortname, 
         // si les cours existent et si le type de valeur est bon
@@ -93,7 +122,7 @@ class local_metadata_utils {
 // alors on met la ligne en erreur en précisant l'erreur
         for ($cpt = 0; $cpt < sizeof($data); $cpt++) {
             $ligne = $data[$cpt];
-            
+
             //si on est sur un cours alors
             // TODO gérer les autre types
             if ($typeImport == 'course_shortname') {
@@ -105,7 +134,7 @@ class local_metadata_utils {
                 $retourObject->ErreurLibelle = "type $typeImport non géré...";
                 return $retourObject;
             }
-            
+
             // on test ici si on a pas trop de colonne
             if (sizeof($header) < sizeof($ligne)) {
                 //echo "<b>ERREUR moyenne</b> type pas bon...";
@@ -129,8 +158,9 @@ class local_metadata_utils {
                     // pour le moment que string
                     if (is_string($ligne[$cpt2])) {
                         //ok continue
-                        // on peuple le triplet(objet,metadata,value)
-                        $triplet = array('instanceid'=> $idObjet, 'fieldid' => $tabIdMetadata[$cpt], 'value' => $ligne[$cpt2]);
+                        // on peuple le triplet(objet,metadata,value,+datatype)
+                        $triplet = array('instanceid' => $idObjet, 'fieldid' => $tabIdMetadata[$cpt2 - 1], 'value' => $ligne[$cpt2 - 1], 'datatype' => local_metadata_utils::get_metadata_type_id($tabTypeMetadata[$cpt2 - 1]));
+                        //var_dump($triplet);
                     } else {
                         //ERREUR moyenne type d'une metadonnée pas bon";
                         $ligne['ERROR'] = 2;
@@ -157,38 +187,33 @@ class local_metadata_utils {
     /**
      * @param $datas
      */
-    public static function write($datas,$contextlevel = CONTEXT_COURSE){
+    public static function write($datas, $contextlevel = CONTEXT_COURSE) {
         global $DB;
-        foreach ($datas as $data){
+        foreach ($datas as $data) {
             //check if exists
-            $record = $DB->get_record('local_metadata',array('fieldid'=> $data['fieldid'],
-                   'instanceid'=> $data['instanceid']));
+            $record = $DB->get_record('local_metadata', array('fieldid' => $data['fieldid'],
+                'instanceid' => $data['instanceid']));
             // TODO missing dataformat treatment.
-            if($record) {
+            if ($record) {
                 $record->data = $data['value'];
-                $DB->update_record('local_metadata',$record);
-            }else{
-                $record_field = $DB->get_record('local_metadata_field',
-                    array('id' =>$data['fieldid'] ));
-                if(!$record_field){
+                $DB->update_record('local_metadata', $record);
+            } else {
+                $record_field = $DB->get_record('local_metadata_field', array('id' => $data['fieldid']));
+                if (!$record_field) {
                     print_error('field not exists');
                 }
                 $record = new stdClass();
-                $record->instanceid=$data['instanceid'];
+                $record->instanceid = $data['instanceid'];
                 $record->fieldid = $data['fieldid'];
                 $record->data = $data['value'];
-                $record->dataformat = 0; //TODO dataformat treatment
-		
-                $DB->insert_record('local_metadata',$record);
+                $record->dataformat = $data['datatype']; //DONE dataformat treatment
+
+                $DB->insert_record('local_metadata', $record);
             }
-        }        
-        
-
-
+        }
     }
-    
-    public static function previewTable($headers = [], $data = [])
-    {
+
+    public static function previewTable($headers = [], $data = []) {
         $table = new html_table();
         $table->head = $headers;
         $data_to_display = [];
@@ -208,12 +233,12 @@ class local_metadata_utils {
         $table->data = $data_to_display;
         echo html_writer::table($table);
     }
-    
+
     /*
      * Read data from $cir object and create an array with it
      */
-    public static function readFromCSV($cir)
-    {
+
+    public static function readFromCSV($cir) {
         $data = [];
         while ($line = $cir->next()) { //get the line
             $data[] = $line;
